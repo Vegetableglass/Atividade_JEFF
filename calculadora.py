@@ -1,3 +1,4 @@
+import random, operator
 rodar = True
 Historico = []  
 while rodar == True: 
@@ -40,18 +41,47 @@ while rodar == True:
         
         def hist():
             if len(Historico) > 0:
-                print(Historico)
+                print(f"{50*"-"}\n{Historico}")
             else:
                 print(f"{50*"-"}\nHistorico vazio.")   
 
         def cl():
             Historico.clear()
-            print(f"{50*"-"}\nHistorico limpo.") 
+            print(f"{50*"-"}\nHistorico limpo.")
+
+        def ci():
+            op = random.choice(["+","-","*","/","**","%"])
+            if op == "**":
+                va = random.randint(-100, 100)
+                vb = random.randint(-10, 10)
+
+            elif op in ["/","%"]:
+                va =  random.randint(-1000000, 1000000)
+                vb = random.randint(-1000000, 1000000)
+
+            else:
+                va = round(random.uniform(-1000000, 1000000),2)
+                vb = round(random.uniform(-1000000, 1000000),2)
+                
+            opf = {
+                "+": operator.add,
+                "-": operator.sub,
+                "*": operator.mul,
+                "/": operator.truediv,
+                "**": operator.pow,
+                "%": operator.mod,
+            }
+            resposta = float(input(f"{50*"-"}\nResolva: {va} {op} {vb}\n{50*"-"}\nDigite aqui(Apenas 2 casas decimais serão consideradas após o ponto, e é necessário arredondar):"))
+            resposta_certa = round(opf[op](va,vb),2)
+            if resposta == resposta_certa:
+                print(f"{50*"-"}\nVocê acertou!")
+            else:
+                print(f"{50*"-"}\nVocê errou...O resultado era {resposta_certa}.") 
             
-        operacao = (int(input(f"{50*"-"}\nEscolha uma operação:\n1:Soma\n2:Subtração\n3:Multiplicação\n4:Divisão\n5:Potência\n6:Resto da Divisão\n7:Historico\n8:Limpar historico\n9:Para sair dessa calculadora\nDigite aqui:")))
+        operacao = int(input(f"{50*"-"}\nEscolha uma operação:\n1:Soma\n2:Subtração\n3:Multiplicação\n4:Divisão\n5:Potência\n6:Resto da Divisão\n7:Historico\n8:Limpar historico\n9:Jogo da calculadora inversa!\n10:Para sair da calculadora\nDigite aqui:"))
         if operacao in [1,2,3,4,5,6]:
-                a = (float(input("Escolha um número para realizar a operações(Digite números decimais com . ao inves de ,):")))
-                b = (float(input("Escolha outro número para realizar a operações(Digite números decimais com . ao inves de ,):")))
+                a = float(input("Escolha um número para realizar a operações(Digite números decimais com . ao inves de ,):"))
+                b = float(input("Escolha outro número para realizar a operações(Digite números decimais com . ao inves de ,):"))
             
                 if operacao == 1:
                     soma(a,b)
@@ -75,10 +105,10 @@ while rodar == True:
             hist()
 
         elif operacao == 8:
-            cl()       
+            cl()      
 
         elif operacao == 9:
-            c = float(input("Digite o resultado aqui:"))
+            ci()
 
         elif operacao == 10:
             rodar = False
@@ -86,3 +116,5 @@ while rodar == True:
 
     except ValueError:
         print(f"{50*"-"}\nPorfavor pare de tentar quebrar o codigo, tente novamente.")
+    except OverflowError:
+        print(f"{50*"-"}\nNúmero digitado é grande demais para ser processado.")
